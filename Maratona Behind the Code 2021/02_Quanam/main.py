@@ -9,7 +9,15 @@ async def hello_world():
 
 
 @app.post("/")
-async def root(request: Request):
+async def root(request: Request) -> dict:
+    """[summary]
+
+    Args:
+        request (Request): [description]
+
+    Returns:
+        [type]: [description]
+    """    
     data = await request.json()
     if data.get('room') == 'activity-room':
         alerts = []
