@@ -1,0 +1,10 @@
+{
+    "room": "bathroom-main",
+    "values": {
+      "co2": 400,
+      "temperature": 22,
+      "humidity": 70,
+      "sound": 30,
+      "illumination": 150
+    }
+  }
