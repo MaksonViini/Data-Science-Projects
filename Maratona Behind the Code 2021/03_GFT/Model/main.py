@@ -1,13 +1,16 @@
 import pandas as pd
-def recommendation(answers, rules) -> pd.DataFrame:
-    """[Function to recommend a service]
+import numpy as np
+
+
+def unpack_services(answers) -> pd.DataFrame:
+    """[summary]
 
     Args:
-        answers ([dataframe]): [Dataframe with the answers of the user]
-        rules ([type]): [Dataframe with the rules of the association rules]
-    """
+        answers ([type]): [description]
 
-    # Verifica todas as marcacoes de answer e retorna uma lista de lista com todas as marcacoes
+    Returns:
+        pd.DataFrame: [description]
+    """
     aux = []
     services = []
     for val in range(answers.shape[0]):
@@ -18,10 +21,21 @@ def recommendation(answers, rules) -> pd.DataFrame:
                 continue
         services.append(aux)
         aux = []
-
     answers['services'] = services
 
-    # Verifica todas as marcacoes dos consequentes e retorna uma lista de lista com todas as marcacoes
+    return answers
+
+
+def unpack_consequents(answers, rules) -> pd.DataFrame:
+    """[summary]
+
+    Args:
+        answers ([type]): [description]
+        rules ([type]): [description]
+
+    Returns:
+        pd.DataFrame: [description]
+    """
     consequents = []
     i = 0
     for j in range(answers.shape[0]):
@@ -32,6 +46,20 @@ def recommendation(answers, rules) -> pd.DataFrame:
         if i == rules.shape[0] - 1:
             i = 0
         i += 1
+    return consequents
+
+
+def recommendation(answers, rules) -> pd.DataFrame:
+    """[Function to recommend a service]
+
+    Args:
+        answers ([dataframe]): [Dataframe with the answers of the user]
+        rules ([type]): [Dataframe with the rules of the association rules]
+    """
+
+    # Verifica todas as marcacoes de answer e retorna uma lista de lista com todas as marcacoes
+
+    answers = unpack_services(answers)
 
     # Preenche o dataframe com as marcacoes dos consequentes
     consequents1 = []
@@ -43,25 +71,31 @@ def recommendation(answers, rules) -> pd.DataFrame:
     i = 0
     for j in range(answers.shape[0]):
         if set(rules['antecedents'][i]) & set(answers['services'][j]):
-            consequents1.append(list(rules['consequents'][i])[0])
-            confidence1.append(rules['confidence'][i])
+            try:
+                consequents1.append(list(rules['consequents'][i])[0])
+                confidence1.append(rules['confidence'][i])
+            except:
+                consequents1.append(np.nan)
+                confidence1.append(np.nan)
             try:
                 consequents2.append(list(rules['consequents'][i])[1])
-                consequents3.append(list(rules['consequents'][i])[2])
                 confidence2.append(rules['confidence'][i])
+            except:
+                consequents2.append(np.nan)
+                confidence2.append(np.nan)
+            try:
+                consequents3.append(list(rules['consequents'][i])[2])
                 confidence3.append(rules['confidence'][i])
             except:
-                consequents2.append(None)
-                consequents3.append(None)
-                confidence2.append(None)
-                confidence3.append(None)
+                consequents3.append(np.nan)
+                confidence3.append(np.nan)
         else:
-            consequents1.append(None)
-            consequents2.append(None)
-            consequents3.append(None)
-            confidence1.append(None)
-            confidence2.append(None)
-            confidence3.append(None)
+            consequents1.append(np.nan)
+            consequents2.append(np.nan)
+            consequents3.append(np.nan)
+            confidence1.append(np.nan)
+            confidence2.append(np.nan)
+            confidence3.append(np.nan)
         if i == rules.shape[0] - 1:
             i = 0
         i += 1
@@ -73,3 +107,15 @@ def recommendation(answers, rules) -> pd.DataFrame:
     answers['CONFIDENCE_1'] = confidence1
     answers['CONFIDENCE_2'] = confidence2
     answers['CONFIDENCE_3'] = confidence3
+
+    answers = answers.drop(columns=['services'])
+    answers.to_csv('recommendation.csv', index=False)
+
+
+if __name__ == '__main__':
+    # Importa a base de dados
+    answers = pd.read_csv(
+        '/home/maksonvinicio/Documents/GitHub/Data-Science-Projects/Maratona Behind the Code 2021/03_GFT/Data/ANSWERS.csv')
+    rules = pd.read_csv(
+        '/home/maksonvinicio/Documents/GitHub/Data-Science-Projects/Maratona Behind the Code 2021/03_GFT/Data/rules.csv')
+    recommendation(answers, rules)
