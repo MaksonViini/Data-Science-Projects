@@ -1,0 +1,14 @@
+lgbm1 - 0.7943469785575049
+
+n_estimators=1000
+learning_rate=0.01
+num_leaves=5
+
+lgbm2 - 0.8001949317738791
+
+n_estimators=1000
+learning_rate=0.01
+num_leaves=7
+
+
+LogisticRegression - 0.7807017543859649 
