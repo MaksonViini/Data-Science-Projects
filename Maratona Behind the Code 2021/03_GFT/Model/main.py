@@ -3,13 +3,13 @@ import numpy as np
 
 
 def unpack_services(answers) -> pd.DataFrame:
-    """[summary]
+    """[unpack the services column]
 
     Args:
-        answers ([type]): [description]
+        answers ([dataframe]): [Dataframe with the answers of the user]
 
     Returns:
-        pd.DataFrame: [description]
+        pd.DataFrame: [Dataframe with the answers and with the services column]
     """
     aux = []
     services = []
