@@ -14,6 +14,12 @@
 - [GitHub](https://github.com/MaksonViini)
 
 # Projetos
+
+## DevOps and Development
+- [REST API com integração de serviços e DevOps](https://github.com/MaksonViini/Best-Practices-Simple-ToDo-FastApi)
+- [REST API com FastApi](https://github.com/MaksonViini/FastApi-App)
+- [REST API com Flask](https://github.com/MaksonViini/Flask-App)
+
 ## Analysis
 
 - [Análise de emissão de gases de efeito estufa](https://github.com/MaksonViini/Green-House-Gases)
